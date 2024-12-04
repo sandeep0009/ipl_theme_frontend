@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setToken, setTeam } from '../store/userSlice'; // Adjust the import path
+import { setTeam } from '../store/userSlice'; // Adjust the import path
 import axiosInstance from '../helper/axios';
 
 interface FormData {
