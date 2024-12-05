@@ -22,13 +22,11 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      console.log(formData)
       const response = await axiosInstance.post('/user/login', formData);
-      console.log(response)
-      const { token } = response.data.data;
-
-      dispatch(setToken(token));
       if (response.status === 200) {
+        const token = response.data.data;
+     
+        dispatch(setToken(token));
         navigate('/');
       }
       setError(null);

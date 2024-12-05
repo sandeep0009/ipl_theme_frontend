@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setTeam } from '../store/userSlice'; // Adjust the import path
+
 import axiosInstance from '../helper/axios';
+import { setTeam } from '../store/userSlice';
+import { useNavigate } from 'react-router';
 
 interface FormData {
   name: string;
@@ -10,7 +12,7 @@ interface FormData {
   iplTeam: string;
 }
 
-const Signin: React.FC = () => {
+const Signup: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -20,6 +22,7 @@ const Signin: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const dispatch = useDispatch();
+  const navigate=useNavigate()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { id, value } = e.target;
@@ -30,10 +33,12 @@ const Signin: React.FC = () => {
     e.preventDefault();
     try {
       const res = await axiosInstance.post('/user/signin', formData);
-      const {  team } = res.data; 
+      if(res.status===201){
+        const team  = res.data.data.iplTeam;  
+        dispatch(setTeam(team)); 
+        navigate('/');
 
-    
-      dispatch(setTeam(team)); 
+      }
 
       setError(null); 
     } catch (error) {
@@ -121,4 +126,4 @@ const Signin: React.FC = () => {
   );
 };
 
-export default Signin;
+export default Signup;
